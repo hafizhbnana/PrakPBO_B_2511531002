@@ -1,0 +1,37 @@
+package pertemuan4;
+
+public class RekeningTabungan extends Rekening {
+	private double sukuBunga;
+	
+	public RekeningTabungan(String nomor, String nama, double saldoAwal, String pinAwal, double sukuBunga) {
+		super(nomor, nama, saldoAwal, pinAwal);
+		this.sukuBunga = sukuBunga;
+	}
+	
+	public void tambahBungaAkhirBulan() {
+		double nominalBunga = saldo * (sukuBunga / 100);
+		saldo += nominalBunga;
+		
+		String idTrx = "TRX-B-" + System.currentTimeMillis();
+		riwayatTransaksi.add(new Transaksi(idTrx, "Bunga", nominalBunga));
+		
+		System.out.println("Bunga " + sukuBunga + "% berhasil ditambahkan : Rp" + nominalBunga);
+	}
+	
+	// CHALLENGE
+	public class KartuDebit extends RekeningTabungan {
+		private final double limitTarik = 500000;
+		public KartuDebit(String nomor, String nama, double saldoAwal,
+				String pinAwal, double sukuBunga) {
+			super(nomor, nama, saldoAwal, pinAwal, sukuBunga);
+		}
+		
+		public void tarikDenganKartu(double nominal) {
+			if (nominal > 500000) {
+				System.out.println("Gagal: Penarikan dengan kartu maksimal Rp500000");
+			} else {
+				tarikTunai(nominal);
+			}
+		}
+	}
+}
