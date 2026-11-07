@@ -35,11 +35,6 @@ public class ShopApp {
         System.out.println("Berat kiriman : " + checkout.totalWeight(cart) + " g");
         System.out.println("Total Reguler : Rp" + checkout.total(cart, regular));
         System.out.println("Total Ekspres : Rp" + checkout.total(cart, express));
-        // checkout.refund(new BankTransferPayment("Bank Nagari") {
-        //     @Override
-        //     public String getName() { return getBankName(); }
-        // }, 1_100);
-        // compile error: <anonymous BankTransferPayment> cannot be converted to RefundablePayment
 
         EWalletPayment wallet = new EWalletPayment("DompetKu", 300_000);
         PaymentMethod transfer = new BankTransferPayment("Bank Nagari") {
@@ -48,6 +43,9 @@ public class ShopApp {
                 return getBankName();
             }
         };
+        // checkout.refund(transfer, 1_000);
+        // compile error: BankTransferPayment is not RefundablePayment
+
         System.out.println("\n== Pembayaran ==");
         System.out.println(wallet.getName() + " berhasil? " + checkout.checkout(cart, regular, wallet));
         System.out.println("Sisa saldo: Rp" + wallet.getBalance());

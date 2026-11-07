@@ -34,10 +34,15 @@ public class CheckoutService {
         if (items == null || items.isEmpty()) {
             return false;
         }
-        return payment.pay(total(items, shipping));
+        return payment.pay(grandTotal(items, shipping, payment));
     }
 
     public boolean refund(RefundablePayment payment, long amount) {
         return payment.refund(amount);
+    }
+
+    public long grandTotal(List<Product> items, ShippingService shipping, PaymentMethod payment) {
+        long total = total(items, shipping);
+        return total + payment.adminFee(total);
     }
 }
